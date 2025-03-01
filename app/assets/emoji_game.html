@@ -32,8 +32,8 @@
         .emoji-list {
             display: block;
             margin: 0 auto;
-            width: 100px;
-            height: 100px;
+            width: 150px;
+            height: 150px;
         }
 
         .option-container {
@@ -150,16 +150,16 @@
     </div>
 
     <script>
-
+        const imageLinkPath = "https://github.com/0xAriseAizen-404/ASD-Detection-app/blob/main/app/static/";
         const emojiData = [
-            { emotion: "Happy", image: "/app/static/happy.png", options: ["Laughing", "Sleepy", "Happy", "Shocked"], answer: 2 },
-            { emotion: "Scared", image: "/app/static/scared.png", options: ["Happy", "Scared", "Sleepy", "Laughing"], answer: 1 },
-            { emotion: "Shocked", image: "/app/static/shocked.png", options: ["Shocked", "Happy", "Thinking", "Laughing"], answer: 0 },
-            { emotion: "Angry", image: "/app/static/angry.png", options: ["Thinking", "Scared", "Sleepy", "Angry"], answer: 3 },
-            { emotion: "Crying", image: "/app/static/crying.png", options: ["Angry", "Laughing", "Shocked", "Crying"], answer: 3 },
-            { emotion: "Laughing", image: "/app/static/laughing.png", options: ["Sleepy", "Laughing", "Crying", "Scared"], answer: 1 },
-            { emotion: "Sleepy", image: "/app/static/sleepy.png", options: ["Crying", "Happy", "Sleepy", "Laughing"], answer: 2 },
-            { emotion: "Thinking", image: "/app/static/thinking.png", options: ["Shocked", "Angry", "Thinking", "Happy"], answer: 2 }
+            { emotion: "Happy", image: imageLinkPath + "happy.png?raw=true", options: ["Laughing", "Sleepy", "Happy", "Shocked"], answer: 2 },
+            { emotion: "Scared", image: imageLinkPath + "scared.png?raw=true", options: ["Happy", "Scared", "Sleepy", "Laughing"], answer: 1 },
+            { emotion: "Shocked", image: imageLinkPath + "shocked.png?raw=true", options: ["Shocked", "Happy", "Thinking", "Laughing"], answer: 0 },
+            { emotion: "Angry", image: imageLinkPath + "angry.png?raw=true", options: ["Thinking", "Scared", "Sleepy", "Angry"], answer: 3 },
+            { emotion: "Crying", image: imageLinkPath + "crying.png?raw=true", options: ["Angry", "Laughing", "Shocked", "Crying"], answer: 3 },
+            { emotion: "Laughing", image: imageLinkPath + "laughing.png?raw=true", options: ["Sleepy", "Laughing", "Crying", "Scared"], answer: 1 },
+            { emotion: "Sleepy", image: imageLinkPath + "sleepy.png?raw=true", options: ["Crying", "Happy", "Sleepy", "Laughing"], answer: 2 },
+            { emotion: "Thinking", image: imageLinkPath + "thinking.png?raw=true", options: ["Shocked", "Angry", "Thinking", "Happy"], answer: 2 }
         ];
 
 
