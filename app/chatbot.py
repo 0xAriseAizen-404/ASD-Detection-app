@@ -15,7 +15,6 @@ model = genai.GenerativeModel("gemini-1.5-pro")
 
 # Extract text from PDF
 def extract_text_from_pdf(uploaded_file):
-    """Extracts text from an uploaded PDF file."""
     try:
         doc = fitz.open(stream=uploaded_file.read(), filetype="pdf")
         text = ""
@@ -28,8 +27,7 @@ def extract_text_from_pdf(uploaded_file):
 # Handle chat input and generate response
 def handle_chat_input(prompt):
     if prompt:
-        # Add user message to history
-        st.session_state.chat_history.append(("User", prompt))
+        st.session_state.chat_history.append(("User", prompt)) # Add user message to history
         
         # Generate bot response
         context = f"Chat History: {st.session_state.chat_history}\nUser: {prompt}"
@@ -46,7 +44,6 @@ def process_pdf_upload():
     if uploaded_file is not None and st.session_state.get("pdf_text") is None:
         st.session_state.pdf_text = extract_text_from_pdf(uploaded_file)
         st.session_state.analyzing = True  # Set analyzing flag
-        # Add analyzing message to chat history
         st.session_state.chat_history.append(("Bot", "PDF successfully uploaded, analyzing report..."))
         # Generate analysis from Gemini
         context = f"Here is a patient's autism test report:\n{st.session_state.pdf_text}\nPlease provide an analysis and precautions based on this report."
@@ -58,7 +55,6 @@ def process_pdf_upload():
         st.session_state.analyzing = False  # Clear analyzing flag
 
 def chatbot_ui():
-    # Initialize session states
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
     if "pdf_text" not in st.session_state:
@@ -68,14 +64,13 @@ def chatbot_ui():
 
     st.title("Autism Support Chatbot")
 
-    # Chat container with scrolling
+    # Chat container
     chat_container = st.container()
     with chat_container:
         for role, message in st.session_state.chat_history:
             with st.chat_message(role.lower()):
                 st.write(message)
 
-    # Custom CSS for styling the chat container
     st.markdown(
         """
         <style>

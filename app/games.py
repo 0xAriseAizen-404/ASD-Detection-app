@@ -208,6 +208,7 @@ def games_ui():
 
         if st.button("Get back to Games"):
             st.session_state.current_page = "main"
+            print(st.session_state.game_data)
             
         html_content = load_game_html("ball_clicker_game.html")
         if html_content:

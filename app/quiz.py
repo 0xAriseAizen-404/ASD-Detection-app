@@ -66,7 +66,7 @@ def train_xgboost_model(df):
     df['Ethnicity'] = df['Ethnicity'].str.lower().map(ethnicity_map).fillna(10)  # Default to 'unknown' if not found
     
     X = df[features]
-    y = df['Class/ASD Traits '].map({'Yes': 1, 'No': 0})
+    y = df['Class/ASD Traits'].map({'Yes': 1, 'No': 0})
     
     # Split the data
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -237,6 +237,7 @@ def generate_pdf_report(user_answers, prediction, probability, questions):
     doc.build(elements)
     buffer.seek(0)
     return buffer
+
 def quiz_ui():
     st.title("Autism Quiz Test")
 
@@ -275,6 +276,7 @@ def quiz_ui():
     # Submit button
     if st.button("Submit Quiz"):
         if all(len(ans) > 0 for ans in user_answers[:9]) and age:
+            # Predict autism based on user answers
             prediction, probability = predict_autism(user_answers, xgb_model, df)
             if prediction is not None:
                 st.session_state.prediction = prediction

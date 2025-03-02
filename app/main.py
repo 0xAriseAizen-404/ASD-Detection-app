@@ -7,7 +7,6 @@ from image_analysis import image_analysis_ui
 
 st.set_page_config(page_title="ASD Detection App", layout="wide")
 
-# Sidebar with categorized navigation
 with st.sidebar:
     st.title("🔴 ASD Detection App")
 
@@ -17,10 +16,6 @@ with st.sidebar:
             ["Chatbot", "Quiz Test", "Gaming Tests", "Audio Analysis", "Image Analysis"],
             label_visibility="collapsed"
         )
-
-    # Placeholder for additional expanders (as in the screenshot)
-    # with st.expander("🌟 COMPONENTS", expanded=True):
-    #     st.write("No components available.")
 
 if page == "Chatbot":
     chatbot_ui()
