@@ -4,3 +4,5 @@ venv/*
 env
 app/models/resnet50.h5
 app/models/VGG16.h5
+app/recordings
+temp_uploads

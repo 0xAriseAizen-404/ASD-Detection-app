@@ -53,7 +53,7 @@ def image_analysis_ui():
 
             # Load and display the uploaded image
             image_display = Image.open(img_path)
-            st.image(image_display, caption="Uploaded Image", use_column_width=True)
+            # st.image(image_display, caption="Uploaded Image", use_column_width=True)
 
             # Preprocess the image using the Flask-inspired function
             img_array = preprocess_image(img_path)
@@ -76,7 +76,8 @@ def image_analysis_ui():
             os.remove(img_path)
 
         except Exception as e:
-            st.error("Failed to process the image. Please ensure the image is valid and in a supported format (.jpg, .png, .jpeg).")
+            # st.error("Failed to process the image. Please ensure the image is valid and in a supported format (.jpg, .png, .jpeg).")
+            pass
 
 if __name__ == "__main__":
     image_analysis_ui()

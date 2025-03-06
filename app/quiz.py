@@ -66,7 +66,7 @@ def train_xgboost_model(df):
     df['Ethnicity'] = df['Ethnicity'].str.lower().map(ethnicity_map).fillna(10)  # Default to 'unknown' if not found
     
     X = df[features]
-    y = df['Class/ASD Traits'].map({'Yes': 1, 'No': 0})
+    y = df['Class/ASD Traits '].map({'Yes': 1, 'No': 0})
     
     # Split the data
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
