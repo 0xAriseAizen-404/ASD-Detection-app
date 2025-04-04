@@ -1,18 +1,20 @@
-Below is a comprehensive `README.md` file in Markdown format that documents everything we’ve done for our `ASD-Detection-App` project. It includes the folder structure, descriptions of all features (chatbot, quiz, games, audio analysis, image analysis), datasets, models, algorithms, installation instructions, package dependencies, and how to run the app.
+# ASD-Detection-App
+
+## Abstract
+
+Early detection of Autism Spectrum Disorder (ASD) is crucial for effective intervention, yet traditional diagnostic methods often suffer from inconsistencies and delays due to subjective assessments. This project proposes a multimodal approach to enhance accuracy by integrating behavioral screening, audio analysis, and image processing. Behavioral assessments utilize the XGBoost algorithm and an LSTM-based sequential neural network (LSTM_ASD_model) for quiz-based evaluation. Audio recordings are analyzed with Recurrent Neural Networks (RNN) combined with Long Short-Term Memory (LSTM) models, including a custom autism_model, to identify distinct vocal characteristics. Image-based detection applies deep learning through the ResNet50 + LSTM model to recognize facial patterns associated with ASD. The proposed system offers a scalable, objective, and efficient solution, assisting healthcare professionals in timely and reliable ASD detection.
 
 ---
-
-# ASD-Detection-App
 
 ## Overview
 
 The **ASD-Detection-App** is a web-based application built using Streamlit to assist in the detection of Autism Spectrum Disorder (ASD) through various interactive modules. The app includes the following features:
 
 - **Chatbot:** A conversational AI chatbot for user interaction.
-- **Quiz Test:** A quiz to assess user responses related to ASD traits.
+- **Quiz Test:** A quiz to assess user responses related to ASD traits using XGBoost and LSTM models.
 - **Gaming Tests:** Three interactive games (Emoji Game, Memory Game, Ball Clicker Game) to evaluate user behavior.
-- **Audio Analysis:** Uses audio data to predict ASD traits with four pre-trained machine learning models (Random Forest, SVM, Naive Bayes, ANN).
-- **Image Analysis:** Uses image data to predict ASD traits with a pre-trained deep learning model (ResNet50).
+- **Audio Analysis:** Uses audio data to predict ASD traits with pre-trained models (ANN, Random Forest, and a custom RNN + LSTM autism_model).
+- **Image Analysis:** Uses image data to predict ASD traits with deep learning models (ResNet50 + LSTM and VGG16).
 
 The app is designed to provide a user-friendly interface for parents, caregivers, or professionals to explore potential ASD indicators through multiple modalities.
 
@@ -43,13 +45,15 @@ ASD-Detection-App/
 │   │   │   ├── Non_Autistic/
 │   ├── features/               # Extracted audio features (MFCC) as .npy files
 │   ├── models/                 # Pre-trained models
-│   │   ├── rf.pkl              # Random Forest model for audio analysis
-│   │   ├── svm.pkl             # Support Vector Machine model for audio analysis
-│   │   ├── nb.pkl              # Naive Bayes model for audio analysis
 │   │   ├── ann.pkl             # Artificial Neural Network model for audio analysis
-│   │   ├── resnet50.h5         # ResNet50 model for image analysis
+│   │   ├── autism_model.h5     # RNN + LSTM model for audio analysis
+│   │   ├── lstm_asd_model.h5   # Sequential LSTM model for quiz analysis
+│   │   ├── nb.pkl              # Naive Bayes model (not used in current implementation)
+│   │   ├── resnet50.h5         # ResNet50 + LSTM model for image analysis
+│   │   ├── rf.pkl              # Random Forest model for audio analysis
+│   │   ├── svm.pkl             # Support Vector Machine model (not used in current implementation)
 │   │   ├── vgg16.h5            # VGG16 model for image analysis
-│   │   ├── z.h5                # Another model for image analysis
+│   │   ├── xgb_model.pkl       # XGBoost model for quiz analysis
 │   ├── notebooks/              # Jupyter notebooks
 │   ├── recordings/             # Raw audio files (.m4a)
 │   │   ├── aut_Recording_*.m4a # Autistic audio samples
@@ -91,8 +95,8 @@ ASD-Detection-App/
 
 - **File:** `quiz.py`
 - **Description:** A questionnaire designed to assess potential ASD traits through user responses.
-- **Implementation:** Built using Streamlit, presenting a series of questions with multiple-choice answers.
-- **Functionality:** Users answer questions, and the app evaluates responses to provide a summary or score indicating potential ASD traits.
+- **Implementation:** Built using Streamlit, presenting a series of questions with multiple-choice answers. Uses XGBoost (`xgb_model.pkl`) and a Sequential LSTM model (`lstm_asd_model.h5`) for prediction.
+- **Functionality:** Users answer questions, and the app evaluates responses using the XGBoost and LSTM models to provide a summary or score indicating potential ASD traits.
 
 ### 3. Gaming Tests
 
@@ -107,17 +111,16 @@ ASD-Detection-App/
 ### 4. Audio Analysis
 
 - **File:** `audio_analysis.py`
-- **Description:** Analyzes audio files to predict ASD traits using four pre-trained machine learning models.
+- **Description:** Analyzes audio files to predict ASD traits using pre-trained models.
 - **Models:**
-  - **Random Forest (rf.pkl):** ~90% accuracy
-  - **Support Vector Machine (svm.pkl):** ~54% accuracy
-  - **Naive Bayes (nb.pkl):** ~81% accuracy
-  - **Artificial Neural Network (ann.pkl):** ~72% accuracy
+  - **Artificial Neural Network (ann.pkl):** A multi-layer perceptron for audio analysis.
+  - **Random Forest (rf.pkl):** An ensemble method for audio analysis.
+  - **RNN + LSTM (autism_model.h5):** A custom model combining RNN and LSTM to identify vocal characteristics.
 - **Dataset:** Audio files (`.m4a`) are stored in the `recordings` folder, with filenames indicating `aut_` for Autistic and `non_` for Non-Autistic samples.
 - **Implementation:**
   - Uses `pydub` to load `.m4a` files.
   - Uses `librosa` to extract MFCC (Mel-frequency cepstral coefficients) features.
-  - Uses `joblib` to load the pre-trained `.pkl` models.
+  - Uses `joblib` to load `.pkl` models and `tensorflow` for the `.h5` model.
   - Models predict based on MFCC features, outputting "Autistic" or "Non Autistic".
 - **Functionality:** Users upload an `.m4a` file, select a model, and the app displays the prediction ("Autistic" in red or "Non Autistic" in green).
 
@@ -126,14 +129,14 @@ ASD-Detection-App/
 - **File:** `image_analysis.py`
 - **Description:** Analyzes images to predict ASD traits using deep learning models.
 - **Models:**
-  - **ResNet50 (resnet50.h5):** A pre-trained ResNet50 model fine-tuned on the dataset.
+  - **ResNet50 + LSTM (resnet50.h5):** A pre-trained ResNet50 model combined with LSTM for sequential image analysis.
   - **VGG16 (vgg16.h5):** A pre-trained VGG16 model fine-tuned on the dataset.
 - **Dataset:** Images are stored in the `data` folder, split into `train`, `test`, and `valid` subfolders, each containing `Autistic` and `Non_Autistic` subfolders with `.jpg`, `.png`, or `.jpeg` images.
 - **Implementation:**
   - Uses `tensorflow` to load and predict with the deep learning models.
   - Uses `Pillow` (PIL) to load and preprocess images (resize to 224x224, convert to RGB).
-  - Uses `tensorflow.keras.applications.vgg16.preprocess_input` for VGG16 models (or similar for other architectures).
-  - Images are preprocessed to match the model’s input requirements (e.g., 224x224x3 for VGG16).
+  - Uses `tensorflow.keras.applications.vgg16.preprocess_input` for VGG16 models (or similar for ResNet50).
+  - Images are preprocessed to match the model’s input requirements (e.g., 224x224x3 for VGG16 and ResNet50).
 - **Functionality:** Users upload an image, and the app displays the prediction ("Autistic" in red or "Non Autistic" in green) along with prediction probabilities.
 
 ---
@@ -167,21 +170,27 @@ ASD-Detection-App/
 
 ## Models
 
+### Quiz Analysis Models
+
+- **Location:** `app/models/`
+- **Files:**
+  - `xgb_model.pkl`: XGBoost model for behavioral assessment through quiz responses.
+  - `lstm_asd_model.h5`: Sequential LSTM model for quiz analysis.
+
 ### Audio Analysis Models
 
 - **Location:** `app/models/`
 - **Files:**
-  - `rf.pkl`: Random Forest model (~90% accuracy).
-  - `svm.pkl`: Support Vector Machine model (~54% accuracy).
-  - `nb.pkl`: Naive Bayes model (~81% accuracy).
-  - `ann.pkl`: Artificial Neural Network model (~72% accuracy).
-- **Training:** They were trained on MFCC features extracted from audio data using `scikit-learn`.
+  - `ann.pkl`: Artificial Neural Network model for audio analysis.
+  - `rf.pkl`: Random Forest model for audio analysis.
+  - `autism_model.h5`: RNN + LSTM model for audio analysis, identifying vocal characteristics.
+- **Training:** They were trained on MFCC features extracted from audio data using `scikit-learn` (for `.pkl` models) and `tensorflow` (for `.h5` models).
 
 ### Image Analysis Models
 
 - **Location:** `app/models/`
 - **Files:**
-  - `resnet50.h5`: ResNet50 model, fine-tuned on the image dataset.
+  - `resnet50.h5`: ResNet50 + LSTM model, fine-tuned on the image dataset for sequential image analysis.
   - `vgg16.h5`: VGG16 model, fine-tuned on the image dataset.
 - **Training:** They were fine-tuned on the image dataset using transfer learning with TensorFlow/Keras. ResNet50 and VGG16 were initially pre-trained on ImageNet, then fine-tuned for binary classification (Autistic vs. Non_Autistic).
 
@@ -189,28 +198,33 @@ ASD-Detection-App/
 
 ## Algorithms
 
+### Quiz Analysis
+
+- **Models:**
+  - **XGBoost (xgb_model.pkl):** A gradient boosting algorithm for behavioral assessment (`scikit-learn`).
+  - **Sequential LSTM (lstm_asd_model.h5):** A sequential neural network for analyzing quiz responses (`tensorflow`).
+- **Prediction:** Models predict potential ASD traits based on user responses.
+
 ### Audio Analysis
 
 - **Feature Extraction:** MFCC features are extracted using `librosa`.
 - **Models:**
-  - **Random Forest:** An ensemble method using decision trees (`scikit-learn`).
-  - **Support Vector Machine (SVM):** A kernel-based classifier (`scikit-learn`).
-  - **Naive Bayes:** A probabilistic classifier (`scikit-learn`).
-  - **Artificial Neural Network (ANN):** A multi-layer perceptron (`scikit-learn`).
+  - **Artificial Neural Network (ann.pkl):** A multi-layer perceptron (`scikit-learn`).
+  - **Random Forest (rf.pkl):** An ensemble method using decision trees (`scikit-learn`).
+  - **RNN + LSTM (autism_model.h5):** A custom model to identify vocal characteristics (`tensorflow`).
 - **Prediction:** Models predict "Autistic" or "Non_Autistic" based on MFCC features.
 
 ### Image Analysis
 
 - **Feature Extraction:** Images are preprocessed (resized to 224x224, converted to RGB, normalized) using `tensorflow.keras.applications` preprocessing functions.
 - **Models:**
-  - **ResNet50:** A deep residual network with 50 layers, fine-tuned for binary classification.
-  - **VGG16:** A deep convolutional network with 16 layers, fine-tuned for binary classification.
+  - **ResNet50 + LSTM (resnet50.h5):** A deep residual network with 50 layers combined with LSTM for sequential analysis, fine-tuned for binary classification.
+  - **VGG16 (vgg16.h5):** A deep convolutional network with 16 layers, fine-tuned for binary classification.
 - **Prediction:** Models predict "Autistic" or "Non_Autistic" based on image features, outputting probabilities for each class.
 
 ### Other Algorithms
 
 - **Chatbot:** Uses `google-generativeai` for generative AI responses.
-- **Quiz:** Simple rule-based scoring logic implemented in Python.
 - **Games:** HTML/JavaScript-based games with user interaction logic.
 
 ---
@@ -334,7 +348,7 @@ pip install numpy streamlit pandas librosa joblib tensorflow scikit-learn google
 ### Quiz Test
 
 - Navigate to the "Quiz Test" page.
-- Answer the questions to receive a summary or score.
+- Answer the questions to receive a summary or score based on XGBoost and LSTM predictions.
 
 ### Gaming Tests
 
@@ -344,7 +358,7 @@ pip install numpy streamlit pandas librosa joblib tensorflow scikit-learn google
 ### Audio Analysis
 
 - Navigate to the "Audio Analysis" page.
-- Select a model (Random Forest, SVM, Naive Bayes, or ANN).
+- Select a model (ANN, Random Forest, or RNN + LSTM autism_model).
 - Upload an `.m4a` audio file.
 - The app will display the prediction ("Autistic" or "Non Autistic").
 
@@ -352,7 +366,7 @@ pip install numpy streamlit pandas librosa joblib tensorflow scikit-learn google
 
 - Navigate to the "Image Analysis" page.
 - Upload an image (`.jpg`, `.png`, `.jpeg`).
-- The app will display the prediction ("Autistic" or "Non Autistic") using the `z.h5` model (assumed to be VGG16).
+- The app will display the prediction ("Autistic" or "Non Autistic") using the ResNet50 + LSTM or VGG16 model.
 
 ---
 
@@ -376,7 +390,7 @@ pip install numpy streamlit pandas librosa joblib tensorflow scikit-learn google
 - **Incorrect Predictions:** If the model consistently predicts "Autistic" or "Non_Autistic":
   - Check the class index mapping in `image_analysis.py` (adjust `if predicted_label == 0` logic).
   - Verify the preprocessing matches the model’s training (e.g., `vgg16.preprocess_input` for VGG16 models).
-  - Retrain the model on your dataset if necessary (see `train_vgg16.py` or `train_resnet50.py` scripts).
+  - Retrain the model on your dataset if necessary.
 
 ### General Issues
 
@@ -387,7 +401,7 @@ pip install numpy streamlit pandas librosa joblib tensorflow scikit-learn google
 
 ## Future Improvements
 
-- **Add More Models:** Include additional models for audio and image analysis (e.g., XGBoost for audio, Inception for images).
+- **Add More Models:** Include additional models for audio and image analysis (e.g., Inception for images).
 - **Improve Chatbot:** Enhance the chatbot with more advanced conversational capabilities.
 - **Expand Quiz:** Add more questions and detailed scoring for the quiz.
 - **Visualizations:** Add visualizations for audio MFCC features or image feature maps.
@@ -398,12 +412,9 @@ pip install numpy streamlit pandas librosa joblib tensorflow scikit-learn google
 ## Contributors
 
 - **Mahesh Avvaru:** Developer of the ASD-Detection-App.
-<!-- - **Grok 3 (xAI):** Assisted in debugging, implementing features. -->
 
 ---
 
 ## License
 
-This project is licensed under the MIT License. <!-- See the `LICENSE` file for details. -->
-
----
+This project is licensed under the MIT License.
