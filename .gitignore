@@ -5,8 +5,8 @@ env
 app/models/resnet50.h5
 app/models/VGG16.h5
 app/recordings
-temp_uploads
+# temp_uploads
 app/models/resnet50_imagenet_adam.h5
 app/data/archive
-app/tempp
-app/tempp/*
+# app/tempp
+# app/tempp/*
